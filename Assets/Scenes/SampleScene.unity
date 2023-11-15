@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -485,9 +485,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 974238578668270715, guid: c708a3b79cd542b42bbfedb17e213bc1,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 974238578668270715, guid: c708a3b79cd542b42bbfedb17e213bc1,
+        type: 3}
       propertyPath: CinemachineCameraTarget
       value: 
       objectReference: {fileID: 1942093397}
+    - target: {fileID: 974238578668270716, guid: c708a3b79cd542b42bbfedb17e213bc1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2119775930974504096, guid: c708a3b79cd542b42bbfedb17e213bc1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -655,6 +665,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1684531149}
+    - targetCorrespondingSourceObject: {fileID: 974238578668270704, guid: c708a3b79cd542b42bbfedb17e213bc1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1684531156}
   m_SourcePrefab: {fileID: 100100000, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
 --- !u!4 &730423890 stripped
 Transform:
@@ -868,16 +882,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RoomLength: 15.1812
   rooms:
-  - Type: 0
+  - name: Empty
+    Type: 0
     RoomObject: {fileID: 2806645849339352035, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
       type: 3}
-  - Type: 1
+  - name: Crouch
+    Type: 1
     RoomObject: {fileID: 2806645849339352035, guid: 6376f1d1d0a11a141a43059820af3e73,
       type: 3}
-  - Type: 2
+  - name: Jump
+    Type: 2
     RoomObject: {fileID: 2806645849339352035, guid: 25e310431fddb094a806951dc495facc,
       type: 3}
-  - Type: 3
+  - name: Pit
+    Type: 3
     RoomObject: {fileID: 2806645849339352035, guid: 6ccaa4abb9ddca9488b305547198dda6,
       type: 3}
   generatedRooms: []
@@ -1409,6 +1427,31 @@ MonoBehaviour:
   - m_Rig: {fileID: 1154110248}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &1684531156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684531139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f87f1ad68879cd846a3025599674741f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftFootTarget: {fileID: 1388006005}
+  rightFootTarget: {fileID: 1639108388}
+  leftFootTargetRig: {fileID: 629624024}
+  rightFootTargetRig: {fileID: 2015083218}
+  pivot: {fileID: 0}
+  scaler: {fileID: 0}
+  smoothness: 2
+  stepHeight: 0.2
+  stepLength: 1
+  angularSpeed: 0.1
+  velocityMultiplier: 80
+  bounceAmplitude: 0.05
+  running: 0
 --- !u!4 &1735814896 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6725500444371674235, guid: c708a3b79cd542b42bbfedb17e213bc1,
@@ -1603,6 +1646,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2521098380615044969, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2806645849339352035, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
         type: 3}
       propertyPath: m_Name

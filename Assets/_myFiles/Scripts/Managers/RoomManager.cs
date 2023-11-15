@@ -11,6 +11,7 @@ public class RoomManager : MonoBehaviour
     [Serializable]
     private struct Room
     {
+        public string name;
         public RoomType Type;
         public GameObject RoomObject;
     }
