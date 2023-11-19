@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -486,7 +486,7 @@ PrefabInstance:
     - target: {fileID: 974238578668270715, guid: c708a3b79cd542b42bbfedb17e213bc1,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 974238578668270715, guid: c708a3b79cd542b42bbfedb17e213bc1,
         type: 3}
@@ -668,7 +668,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 974238578668270704, guid: c708a3b79cd542b42bbfedb17e213bc1,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1684531156}
+      addedObject: {fileID: 1684531163}
   m_SourcePrefab: {fileID: 100100000, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
 --- !u!4 &730423890 stripped
 Transform:
@@ -1116,6 +1116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1388006005}
+  - component: {fileID: 1388006006}
   m_Layer: 0
   m_Name: LeftLegIK_target
   m_TagString: Untagged
@@ -1138,6 +1139,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 629624024}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1388006006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388006004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef4924d5229f24459c5dcf718d52221, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  otherFoot: {fileID: 1639108389}
+  stepDistance: 0.5
+  stepHeight: 0.5
+  stepLength: 0.5
+  footspacing: 0
+  speed: 4
+  body: {fileID: 1684531140}
+  bodyOffset: 0.5
+  footOffset: {x: 0, y: 0, z: 0}
 --- !u!4 &1427999505 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 807809394842226944, guid: c708a3b79cd542b42bbfedb17e213bc1,
@@ -1283,6 +1308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1639108388}
+  - component: {fileID: 1639108389}
   m_Layer: 0
   m_Name: RightLegIK_target
   m_TagString: Untagged
@@ -1306,6 +1332,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2015083218}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1639108389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639108387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef4924d5229f24459c5dcf718d52221, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  otherFoot: {fileID: 1388006006}
+  stepDistance: 0.5
+  stepHeight: 0.5
+  stepLength: 0.5
+  footspacing: 0
+  speed: 4
+  body: {fileID: 1684531140}
+  bodyOffset: 0
+  footOffset: {x: 0, y: 0, z: 0}
 --- !u!4 &1645529601 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5192734482689607727, guid: c708a3b79cd542b42bbfedb17e213bc1,
@@ -1427,7 +1477,7 @@ MonoBehaviour:
   - m_Rig: {fileID: 1154110248}
     m_Active: 1
   m_Effectors: []
---- !u!114 &1684531156
+--- !u!114 &1684531163
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1436,22 +1486,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1684531139}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f87f1ad68879cd846a3025599674741f, type: 3}
+  m_Script: {fileID: 11500000, guid: c859333f763993c498b560314a461b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftFootTarget: {fileID: 1388006005}
-  rightFootTarget: {fileID: 1639108388}
-  leftFootTargetRig: {fileID: 629624024}
-  rightFootTargetRig: {fileID: 2015083218}
-  pivot: {fileID: 0}
-  scaler: {fileID: 0}
-  smoothness: 2
-  stepHeight: 0.2
-  stepLength: 1
-  angularSpeed: 0.1
-  velocityMultiplier: 80
-  bounceAmplitude: 0.05
-  running: 0
 --- !u!4 &1735814896 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6725500444371674235, guid: c708a3b79cd542b42bbfedb17e213bc1,
