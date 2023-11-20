@@ -17,7 +17,6 @@ public class IKFootSolver : MonoBehaviour
 
     void Start()
     {
-        footspacing = 0;
         oldPosition = newPosition = currentPosition = transform.position;
         oldNormal = newNormal = currentNormal = transform.up;
         lerp = 1;

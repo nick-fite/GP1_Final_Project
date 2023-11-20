@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -809,7 +809,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NestedParentArmature_Unpack
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 974238578668270715, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+    - {fileID: 7018120648484134528, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
+    - {fileID: 3543048675319490572, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
     m_RemovedGameObjects:
     - {fileID: 3128949090649374765, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
     - {fileID: 7888303496483045073, guid: c708a3b79cd542b42bbfedb17e213bc1, type: 3}
@@ -1329,7 +1332,7 @@ MonoBehaviour:
   stepDistance: 0.5
   stepHeight: 1
   stepLength: 0.5
-  footspacing: 0
+  footspacing: -0.25
   speed: 4
   body: {fileID: 1684531140}
   bodyOffset: 0.5
@@ -1522,7 +1525,7 @@ MonoBehaviour:
   stepDistance: 0.5
   stepHeight: 1
   stepLength: 0.5
-  footspacing: 0
+  footspacing: 0.25
   speed: 4
   body: {fileID: 1684531140}
   bodyOffset: 0
@@ -1663,6 +1666,11 @@ MonoBehaviour:
   speed: 50
   jumpHeight: 3
   gravity: -9.8
+  defualtTimerValue: 0.5
+  WallRunSection: 0
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &1735814896 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6725500444371674235, guid: c708a3b79cd542b42bbfedb17e213bc1,

@@ -69,6 +69,7 @@ public class RhythmMovement : MonoBehaviour
     {
         if (!WallRunSection && !movedLeft) 
         {
+            GameManager.m_Instance.GetMusicManager().PlaySound();
             playerController.Move(Vector3.forward * speed * Time.deltaTime);
 
             movedLeft = true;
@@ -91,6 +92,7 @@ public class RhythmMovement : MonoBehaviour
     {
         if (!WallRunSection && !movedRight)
         {
+            GameManager.m_Instance.GetMusicManager().PlaySound();
             playerController.Move(Vector3.forward * speed * Time.deltaTime);
 
             movedLeft = false;

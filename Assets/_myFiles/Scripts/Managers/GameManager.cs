@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager m_Instance;
     private RoomManager roomManager;
+    private MusicManager musicManager;
 
     [SerializeField] private GameObject PlayerObj;
     
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
         }
 
         PlayerObj = GameObject.FindGameObjectWithTag("Player");
+        musicManager = this.AddComponent<MusicManager>();
     }
 
     private void Start()
@@ -33,4 +35,6 @@ public class GameManager : MonoBehaviour
 
     public RoomManager GetRoomManager() { return roomManager; }
     public GameObject GetPlayerObject() { return PlayerObj; }
+
+    public MusicManager GetMusicManager() { return musicManager; }
 }
