@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private RoomManager roomManager;
     private MusicManager musicManager;
 
+    [SerializeField] private GameObject GameOverCanvas;
     [SerializeField] private GameObject PlayerObj;
     
     private void Awake()
@@ -29,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         roomManager = GetComponent<RoomManager>();
     }
 
@@ -36,4 +39,5 @@ public class GameManager : MonoBehaviour
     public GameObject GetPlayerObject() { return PlayerObj; }
 
     public MusicManager GetMusicManager() { return musicManager; }
+    public GameObject GetGameOverCanvas() { return GameOverCanvas; }
 }

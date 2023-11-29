@@ -10,6 +10,8 @@ public class IKFootSolver : MonoBehaviour
     [SerializeField] private Transform body;
     [SerializeField] private float bodyOffset;
     [SerializeField] private Vector3 footOffset;
+    private bool WallRunning;
+    private WallChosen chosenWall;
 
     private Vector3 oldPosition, newPosition, currentPosition;
     private Vector3 oldNormal, newNormal, currentNormal;
@@ -27,8 +29,24 @@ public class IKFootSolver : MonoBehaviour
     {
         transform.position = currentPosition;
         transform.up = currentNormal;
+        Ray ray;
 
-        Ray ray = new Ray( new Vector3(body.position.x, body.position.y + bodyOffset, body.position.z) + (body.right * footspacing), Vector3.down);
+        if (WallRunning)
+        {
+            if (chosenWall == WallChosen.Left)
+            {
+                ray = new Ray(new Vector3(body.position.x, body.position.y + bodyOffset, body.position.z) + (body.right * footspacing), -Vector3.right);
+            }
+            else
+            {
+                ray = new Ray(new Vector3(body.position.x, body.position.y + bodyOffset, body.position.z) + (body.right * footspacing), Vector3.right);
+            }
+        }
+        else
+        {
+            ray = new Ray(new Vector3(body.position.x, body.position.y + bodyOffset, body.position.z) + (body.right * footspacing), Vector3.down);
+        }
+
         Debug.DrawRay(ray.origin, ray.direction);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 10, terrainLayer))
@@ -57,4 +75,6 @@ public class IKFootSolver : MonoBehaviour
     }
 
     public bool IsMoving() { return lerp < 1; }
+    public void SetWallRunning(bool newState){ WallRunning = newState; }
+    public void SetChosenWall(WallChosen newState) { chosenWall = newState; }
 }

@@ -6,25 +6,25 @@ using UnityEngine.Windows;
 
 public class RhythmMovement : MonoBehaviour
 {
-    enum WallRunMode { Left, Right, None }
     [SerializeField] float speed = 50;
     [SerializeField] float jumpHeight = 30f;
     [SerializeField] float gravity = -9.8f;
     [SerializeField] float defualtTimerValue = 0.5f;
+    [SerializeField] float initialHeight = 1.8f;
+    [SerializeField] float crouchingHeight = 0.8f;
+    [SerializeField] IKFootSolver[] footSolvers;
     float timer;
+    WallChosen chosenWall = WallChosen.None;
 
-    bool movedLeft = false;
-    bool movedRight = true;
     [SerializeField] bool WallRunSection = false;
     bool grounded;
+    private bool Move = true;
 
     Vector3 playerVelocity;
 
     CharacterController playerController;
 
     [SerializeField] LayerMask GroundLayers;
-
-    WallRunMode ChosenWall = WallRunMode.None;
 
     private void Start()
     {
@@ -45,10 +45,47 @@ public class RhythmMovement : MonoBehaviour
 
     private void ProcessMovement()
     {
-        playerVelocity.y += Time.deltaTime * gravity;
-        playerController.Move(playerVelocity * Time.deltaTime);
-    }
+        if (!WallRunSection)
+        {
+            if (transform.localPosition.x < -0.4f)
+            {
+                playerVelocity.x = 10f;
+            }
+            else if (transform.localPosition.x > 0.4f)
+            {
+                playerVelocity.x = -10f;
+            }
+            else { playerVelocity.x = 0f; }
+            playerVelocity.y += Time.deltaTime * gravity;
+        }
+        else
+        {
+            if (timer > 0)
+            {
+                if (chosenWall == WallChosen.Left)
+                {
+                    playerVelocity.y = 3f;
+                    playerVelocity.x = -10f;
+                }
+                else if (chosenWall == WallChosen.Right)
+                {
+                    playerVelocity.y = 3f;
+                    playerVelocity.x = 10f;
+                }
+            }
+            else
+            {
+                playerVelocity.x = 0f;
+                playerVelocity.y += Time.deltaTime * gravity;
+            }
+        }
+        if (Move)
+        {
+            playerController.Move(Vector3.forward * speed * Time.deltaTime);
+            playerController.Move(playerVelocity * Time.deltaTime);
 
+        }
+    }
     private void RunTimer()
     {
         timer -= Time.deltaTime;
@@ -65,6 +102,33 @@ public class RhythmMovement : MonoBehaviour
         }
     }
 
+    public void WallRunLeft()
+    {
+        if (WallRunSection && (chosenWall == WallChosen.Left || chosenWall == WallChosen.None))
+        {
+            foreach (IKFootSolver foot in footSolvers)
+            {
+                foot.SetChosenWall(WallChosen.Left);
+            }
+            chosenWall = WallChosen.Left;
+            timer = 0.25f;
+        }
+    }
+
+    public void WallRunRight()
+    {
+        if (WallRunSection && (chosenWall == WallChosen.Right || chosenWall == WallChosen.None))
+        {
+            foreach (IKFootSolver foot in footSolvers)
+            {
+                foot.SetChosenWall(WallChosen.Right);
+            }
+            chosenWall = WallChosen.Right;
+            timer = 0.25f;
+        }
+    }
+
+    /*
     public void MoveLeftFoot()
     {
         if (!WallRunSection && !movedLeft) 
@@ -110,7 +174,7 @@ public class RhythmMovement : MonoBehaviour
                 playerController.Move(Vector3.forward * speed * Time.deltaTime);
             }
         }
-    }
+    }*/
 
     public void CrouchInput(InputAction.CallbackContext context)
     {
@@ -118,14 +182,26 @@ public class RhythmMovement : MonoBehaviour
         {
             if (context.performed)
             {
-                playerController.height = playerController.height - 0.5f;
+                playerController.height = crouchingHeight;
             }
             if (context.canceled)
             {
-                playerController.height = playerController.height + 0.5f;
+                playerController.height = initialHeight;
             }
         }
     }
 
-    public void SetWallRunSection(bool newValue) { WallRunSection = newValue; }
+    public void SetWallRunSection(bool newValue)
+    {
+        chosenWall = WallChosen.None;
+        timer = 0f;
+        WallRunSection = newValue;
+        foreach (IKFootSolver foot in footSolvers)
+        {
+            foot.SetWallRunning(newValue);
+        }
+    }
+
+    public void SetMove(bool newState) { Move = newState; }
 }
+public enum WallChosen { Left, Right, None }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SimpleSineGenerator : MonoBehaviour
 {
-    [SerializeField][Range(0, 1)] private float initialAmplitude = 0.5f;
+    //[SerializeField][Range(0, 1)] private float initialAmplitude = 0.5f;
     [SerializeField] private float frequency = 80.7f; //middle C 261.62f
 
     [SerializeField] private float amplitude;

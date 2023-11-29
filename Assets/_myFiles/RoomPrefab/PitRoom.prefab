@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 2026620919668654303}
   - component: {fileID: 3469499597882162771}
   - component: {fileID: 1448927912366552358}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -617,7 +617,7 @@ GameObject:
   - component: {fileID: 4287588600873807889}
   - component: {fileID: 2125381021082155820}
   - component: {fileID: 1896610231528976343}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WallRunWall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -722,8 +722,9 @@ GameObject:
   - component: {fileID: 3968226412000708729}
   - component: {fileID: 6389004964356359017}
   - component: {fileID: 1172343594670694904}
+  - component: {fileID: 5673573010890490001}
   m_Layer: 6
-  m_Name: TempWalkOver
+  m_Name: EndGameTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -738,8 +739,8 @@ Transform:
   m_GameObject: {fileID: 8006052461480829749}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.73, z: 0}
-  m_LocalScale: {x: 6.8148, y: 1, z: 6.71555}
+  m_LocalPosition: {x: 0, y: -4.33, z: 0}
+  m_LocalScale: {x: 33.726196, y: 1, z: 115.92742}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8028770958915202231}
@@ -811,10 +812,22 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5673573010890490001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8006052461480829749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e8bbf17e0134dd44acdcd339c6eaf9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8140998213279914007
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,7 +840,7 @@ GameObject:
   - component: {fileID: 7758973489044334341}
   - component: {fileID: 2847708415591578270}
   - component: {fileID: 6331575571134960286}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -932,7 +945,7 @@ GameObject:
   - component: {fileID: 5373963668461904406}
   - component: {fileID: 2484122678147026672}
   - component: {fileID: 8842356462890096456}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WallRunWall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
