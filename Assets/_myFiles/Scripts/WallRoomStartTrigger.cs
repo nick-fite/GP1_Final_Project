@@ -9,7 +9,6 @@ public class WallRoomStartTrigger : MonoBehaviour
         RhythmMovement movement;
         if (other.TryGetComponent(out movement))
         {
-            Debug.Log("fuck");
             movement.SetWallRunSection(true);
         }
     }

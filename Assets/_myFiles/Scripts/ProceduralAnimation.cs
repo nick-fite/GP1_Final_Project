@@ -4,7 +4,6 @@ using UnityEngine;
 
 
 //I got this from here https://github.com/lchaumartin/HumanoidProceduralAnimation/blob/main/Scripts/ProceduralAnimation.cs
-//idk if it'll work all that well guess we'll see
 public class ProceduralAnimation : MonoBehaviour
 {
 
@@ -117,7 +116,8 @@ public class ProceduralAnimation : MonoBehaviour
         lastRightFootPos = rightFootTargetRig.position;
         float feetDistance = Mathf.Clamp01(Mathf.Abs(leftFootTargetRig.localPosition.z - rightFootTargetRig.localPosition.z) / (stepLength / 4f));
 
-        float heightReduction = (running ? Mathf.Clamp01(velocity.magnitude) * bounceAmplitude - bounceAmplitude * Mathf.Clamp(velocity.magnitude, 0f, 10f) * feetDistance : bounceAmplitude * Mathf.Clamp(velocity.magnitude, 0f, 10f) * feetDistance);
+        float heightReduction = (running ? Mathf.Clamp01(velocity.magnitude) * bounceAmplitude - bounceAmplitude * Mathf.Clamp(velocity.magnitude, 0f, 10f) 
+            * feetDistance : bounceAmplitude * Mathf.Clamp(velocity.magnitude, 0f, 10f) * feetDistance);
         transform.localPosition = initBodyPos - heightReduction * Vector3.up;
         scaler.localPosition = new Vector3(0f, heightReduction, 0f);
 

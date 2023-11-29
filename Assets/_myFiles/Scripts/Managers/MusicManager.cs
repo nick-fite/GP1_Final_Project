@@ -15,7 +15,6 @@ public class MusicManager : MonoBehaviour
 
     public void PlaySound()
     {
-        Debug.Log("started");
         StartCoroutine(generator.AmplitudeKickWave());
     }
 

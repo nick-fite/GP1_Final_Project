@@ -5,7 +5,7 @@ using UnityEngine;
 public class SimpleSineGenerator : MonoBehaviour
 {
     [SerializeField][Range(0, 1)] private float initialAmplitude = 0.5f;
-    [SerializeField] private float frequency = 261.62f; //middle C
+    [SerializeField] private float frequency = 80.7f; //middle C 261.62f
 
     [SerializeField] private float amplitude;
     private double _phase;
@@ -77,23 +77,21 @@ public class SimpleSineGenerator : MonoBehaviour
 
     public IEnumerator AmplitudeKickWave()
     {
-        Debug.Log("started (in generator)");
         amplitude = 0;
         float amplitudePhase = 0;
-        float time = 0;
-        while (time < 1)
+        while (amplitudePhase < 0.5)
         {
             Debug.Log(amplitudePhase);
-            if (amplitudePhase < 2.118f)
+            if (amplitudePhase < 0.072f)
             {
-                amplitude = (amplitudePhase * amplitudePhase) + 4;
+                amplitude = 10 * (amplitudePhase * amplitudePhase) + 0.5f;
             }
-            else if (amplitudePhase >= 2.118f && amplitudePhase < 10)
+            else if (amplitudePhase >= 0.072f && amplitudePhase < 0.5)
             {
-                amplitude = 1 / (amplitudePhase - 2);
+                amplitude = 0.4f / amplitudePhase;
             }
+            //amplitude *= 10;
             amplitudePhase += Time.deltaTime;
-            time += Time.deltaTime;
             yield return null;
         }
         amplitude = 0;
