@@ -16,6 +16,8 @@ public class RhythmMovement : MonoBehaviour
     float timer;
     WallChosen chosenWall = WallChosen.None;
 
+    Animator animator;
+
     [SerializeField] bool WallRunSection = false;
     bool grounded;
     private bool Move = true;
@@ -30,6 +32,7 @@ public class RhythmMovement : MonoBehaviour
     {
         playerController = GetComponent<CharacterController>();
         timer = defualtTimerValue;
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -97,6 +100,7 @@ public class RhythmMovement : MonoBehaviour
         {
             if (grounded)
             {
+                animator.SetTrigger("Jump");
                 playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
             }
         }
@@ -183,10 +187,14 @@ public class RhythmMovement : MonoBehaviour
             if (context.performed)
             {
                 playerController.height = crouchingHeight;
+                playerController.center = new Vector3(playerController.center.x, playerController.center.y - 0.5f, playerController.center.z);
+                animator.SetBool("Crouch", true);
             }
             if (context.canceled)
             {
                 playerController.height = initialHeight;
+                playerController.center = new Vector3(playerController.center.x, playerController.center.y + 0.5f, playerController.center.z);
+                animator.SetBool("Crouch", false);
             }
         }
     }
