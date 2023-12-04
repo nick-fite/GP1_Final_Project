@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RoomManager : MonoBehaviour
@@ -30,6 +31,7 @@ public class RoomManager : MonoBehaviour
         {
             roomDictionary.Add(room.Type, room.RoomObject);
         }
+
         generatedRooms.AddRange(GameObject.FindGameObjectsWithTag("Room"));
     }
 
@@ -41,7 +43,7 @@ public class RoomManager : MonoBehaviour
         int RandRoomNum = UnityEngine.Random.Range(0, roomDictionary.Keys.Count);
         GameObject RandRoom = roomDictionary[roomDictionary.ElementAt(RandRoomNum).Key]; //There is a better way to do this... but this is COOLER so TAKE THAT MOM
 
-        Vector3 newPos = new Vector3(PreviousLocation.transform.position.x, PreviousLocation.transform.position.y, PreviousLocation.transform.position.z + RoomLength);
+        Vector3 newPos = new Vector3(PreviousLocation.transform.position.x, PreviousLocation.transform.position.y, PreviousLocation.transform.position.z + (RoomLength*2));
 
         generatedRooms.Add(Instantiate(RandRoom, newPos, PreviousLocation.transform.rotation));
 
@@ -54,4 +56,4 @@ public class RoomManager : MonoBehaviour
     }
 }
 
-enum RoomType { Empty, Crouch, Jump, Pit, COUNT }
+enum RoomType { Empty, Crouch, Jump, Pit, Block, COUNT }

@@ -263,6 +263,79 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105107416}
   m_CullTransparentMesh: 1
+--- !u!1001 &142288301
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2521098380615044969, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2806645849339352035, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_Name
+      value: EmptyRoom (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028770958915202231, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -51.356674
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028770958915202231, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.1920524
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028770958915202231, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 625.2812
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028770958915202231, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028770958915202231, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028770958915202231, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028770958915202231, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028770958915202231, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028770958915202231, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8028770958915202231, guid: 452abf46c2c9c784f8fd64c1b84cfeae,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 452abf46c2c9c784f8fd64c1b84cfeae, type: 3}
 --- !u!1 &171720284
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,6 +1146,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 1209d32eb50d59b47aafd7327bf8b0ba, type: 2}
+    - target: {fileID: 7913620471477998464, guid: c708a3b79cd542b42bbfedb17e213bc1,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 8047161636021232021, guid: c708a3b79cd542b42bbfedb17e213bc1,
         type: 3}
       propertyPath: m_Name
@@ -1462,8 +1540,12 @@ MonoBehaviour:
     Type: 3
     RoomObject: {fileID: 2806645849339352035, guid: 6ccaa4abb9ddca9488b305547198dda6,
       type: 3}
+  - name: Block
+    Type: 4
+    RoomObject: {fileID: 2806645849339352035, guid: 3c34f7b4d43d49843a9317a7900ca0ef,
+      type: 3}
   generatedRooms: []
-  MaxRooms: 2
+  MaxRooms: 3
 --- !u!4 &1054374424 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1259677458336638495, guid: c708a3b79cd542b42bbfedb17e213bc1,
@@ -2124,10 +2206,10 @@ MonoBehaviour:
   speed: 10
   jumpHeight: 1
   gravity: -30
-  defualtTimerValue: 0.5
   initialHeight: 1.8
   crouchingHeight: 0.8
-  WallRunSection: 0
+  chosenWall: 2
+  jumped: 0
   GroundLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2534,5 +2616,6 @@ SceneRoots:
   - {fileID: 1517956942}
   - {fileID: 720411881}
   - {fileID: 1359012612934904052}
+  - {fileID: 142288301}
   - {fileID: 743107338}
   - {fileID: 1620867064}

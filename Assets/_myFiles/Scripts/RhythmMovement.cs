@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.Windows;
 
 public class RhythmMovement : MonoBehaviour
@@ -11,12 +12,14 @@ public class RhythmMovement : MonoBehaviour
     [SerializeField] float gravity = -9.8f;
     [SerializeField] float initialHeight = 1.8f;
     [SerializeField] float crouchingHeight = 0.8f;
-    WallChosen chosenWall = WallChosen.None;
+    
+    [SerializeField] WallChosen chosenWall = WallChosen.None;
+    GameObject wallObj;
 
     Animator animator;
 
     bool WallRunSection = false;
-    [SerializeField]bool jumped = false;
+    [SerializeField] bool jumped = false;
     bool grounded;
     private bool Move = true;
 
@@ -40,15 +43,17 @@ public class RhythmMovement : MonoBehaviour
     private void Update()
     {
         grounded = playerController.isGrounded;
-        SetWallChosen();
         ProcessMovement();
-        if (playerController.isGrounded) { jumped = false; }
+        SetWallChosen();
+        if (playerController.isGrounded) { jumped = false; animator.SetBool("Grounded", true); }
     }
 
     private void ProcessMovement()
     {
+        playerVelocity.y += Time.deltaTime * gravity;
         if (WallRunSection && jumped)
         {
+            animator.SetBool("WallRunning", true);
             if (chosenWall == WallChosen.Left)
             {
                 playerVelocity.y = 3f;
@@ -60,19 +65,30 @@ public class RhythmMovement : MonoBehaviour
                 playerVelocity.x = 10f;
             }
         }
+        else
+        {
+            playerVelocity.x = 0f;
+        }
 
-        playerVelocity.y += Time.deltaTime * gravity;
-        
         if (Move)
         {
             Vector2 inputVector = playerInput.Movement.Move.ReadValue<Vector2>();
-            Vector3 MovementDirection = new Vector3(inputVector.x, 0, inputVector.y);
-            playerController.Move(Time.deltaTime * transform.TransformDirection(MovementDirection) * speed);
+            Vector3 movementDirection = new Vector3(inputVector.x, 0, inputVector.y);
+            
+            playerController.Move(Time.deltaTime * transform.TransformDirection(movementDirection) * speed);
+
+            Vector3 controllerRelativeToParent = transform.parent.InverseTransformPoint(playerController.transform.position);
+
+
+            if (controllerRelativeToParent.x > 2.81f || controllerRelativeToParent.x < -2f)
+            {
+                Debug.Log("CLAMPING");
+                playerController.Move(Time.deltaTime * -transform.TransformDirection(movementDirection) * speed);
+            }
 
 
             playerController.Move(Vector3.forward * speed * Time.deltaTime);
             playerController.Move(playerVelocity * Time.deltaTime);
-
         }
     }
 
@@ -86,59 +102,11 @@ public class RhythmMovement : MonoBehaviour
             {
                 jumped = true;
                 animator.SetTrigger("Jump");
+                animator.SetBool("Grounded", false);
                 playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
             }
         }
     }
-
-    
-    /*
-    public void MoveLeftFoot()
-    {
-        if (!WallRunSection && !movedLeft) 
-        {
-            GameManager.m_Instance.GetMusicManager().PlaySound();
-            playerController.Move(Vector3.forward * speed * Time.deltaTime);
-
-            movedLeft = true;
-            movedRight = false;
-        }
-        if (WallRunSection)
-        {
-            if (ChosenWall == WallRunMode.None)
-            {
-                ChosenWall = WallRunMode.Left;
-            }
-            if (ChosenWall == WallRunMode.Left)
-            {
-                playerController.Move(Vector3.forward * speed * Time.deltaTime);
-            }
-        }
-    }
-
-    public void MoveRightFoot()
-    {
-        if (!WallRunSection && !movedRight)
-        {
-            GameManager.m_Instance.GetMusicManager().PlaySound();
-            playerController.Move(Vector3.forward * speed * Time.deltaTime);
-
-            movedLeft = false;
-            movedRight = true;
-        }
-
-        if (WallRunSection)
-        {
-            if (ChosenWall == WallRunMode.None)
-            {
-                ChosenWall = WallRunMode.Right;
-            }
-            if (ChosenWall == WallRunMode.Right)
-            {
-                playerController.Move(Vector3.forward * speed * Time.deltaTime);
-            }
-        }
-    }*/
 
     public void CrouchInput(InputAction.CallbackContext context)
     {
@@ -148,13 +116,13 @@ public class RhythmMovement : MonoBehaviour
             {
                 playerController.height = crouchingHeight;
                 playerController.center = new Vector3(playerController.center.x, playerController.center.y - 0.5f, playerController.center.z);
-                animator.SetBool("Crouch", true);
+                StartCoroutine(TransitionToCrawl());
             }
             if (context.canceled)
             {
                 playerController.height = initialHeight;
                 playerController.center = new Vector3(playerController.center.x, playerController.center.y + 0.5f, playerController.center.z);
-                animator.SetBool("Crouch", false);
+                StartCoroutine(TransitionToRun());
             }
         }
     }
@@ -166,8 +134,8 @@ public class RhythmMovement : MonoBehaviour
 
         Debug.DrawRay(rayLeft.origin, rayRight.direction);
 
-        if (Physics.Raycast(rayLeft, out RaycastHit hitLeft, 5, LayerMask.GetMask("Wall"))) { chosenWall = WallChosen.Left; }
-        else if (Physics.Raycast(rayRight, out RaycastHit hitRight, 5, LayerMask.GetMask("Wall"))) { chosenWall = WallChosen.Right; }
+        if (Physics.Raycast(rayLeft, out RaycastHit hitLeft, 2.5f, LayerMask.GetMask("Wall"))) { chosenWall = WallChosen.Left; }
+        else if (Physics.Raycast(rayRight, out RaycastHit hitRight, 2.5f, LayerMask.GetMask("Wall"))) { chosenWall = WallChosen.Right; }
         else { chosenWall = WallChosen.None; }
     }
 
@@ -175,24 +143,56 @@ public class RhythmMovement : MonoBehaviour
     {
         WallRunSection = newValue;
 
-        if (!newValue)
+        if (newValue)
         {
-            //WallRunning = false;
-            animator.SetBool("WallRunning", false);
+            Debug.Log("wallrunsection");
+            if (chosenWall == WallChosen.Left)
+            {
+                playerController.center = new Vector3(playerController.center.x - 0.5f, playerController.center.y, playerController.center.z);
+                animator.SetBool("WallRunRight", false);
+            }
+            if (chosenWall == WallChosen.Right)
+            {
+                playerController.center = new Vector3(playerController.center.x + 0.5f, playerController.center.y, playerController.center.z);
+                animator.SetBool("WallRunRight", true);
+            }
         }
         else
         {
-            Debug.Log("wallrunsection");
-            if (chosenWall == WallChosen.Left) {
-                playerController.center = new Vector3(playerController.center.x, playerController.center.y, playerController.center.z);
-                animator.SetBool("WallRunning", true);
-                animator.SetBool("WallRunRight", false);
+            animator.SetBool("WallRunning", false);
+
+            if (chosenWall == WallChosen.Left)
+            {
+                playerController.center = new Vector3(playerController.center.x + 0.5f, playerController.center.y, playerController.center.z);
             }
-            if (chosenWall == WallChosen.Right) { 
-                playerController.center = new Vector3(playerController.center.x, playerController.center.y, playerController.center.z);
-                animator.SetBool("WallRunning", true);
-                animator.SetBool("WallRunRight", true);
+            if (chosenWall == WallChosen.Right)
+            {
+                playerController.center = new Vector3(playerController.center.x - 0.5f, playerController.center.y, playerController.center.z);
             }
+        }
+    }
+
+    IEnumerator TransitionToCrawl()
+    {
+        float rate = 1.0f / 7.5F * 15;
+        float t = 0.0f;
+        while (t < 1.0f)
+        {
+            t += Time.deltaTime * rate;
+            animator.SetFloat("RunCrawl", t);
+            yield return null;
+        }
+    }
+
+    IEnumerator TransitionToRun()
+    {
+        float rate = 1.0f / 7.5F * 15;
+        float t = 1.0f;
+        while (t > 0.0f)
+        {
+            t -= Time.deltaTime * rate;
+            animator.SetFloat("RunCrawl", t);
+            yield return null;
         }
     }
 

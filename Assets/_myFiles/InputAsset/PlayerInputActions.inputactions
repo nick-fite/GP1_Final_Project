@@ -58,6 +58,17 @@
                 },
                 {
                     "name": "",
+                    "id": "af26f456-4efd-4ca2-a3e2-23c83d8d4e4c",
+                    "path": "<Touchscreen>/touch5/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "f0e90d28-991e-4c88-be0d-62fa9814d399",
                     "path": "<Keyboard>/space",
                     "interactions": "",
