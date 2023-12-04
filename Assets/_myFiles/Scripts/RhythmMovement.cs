@@ -9,16 +9,14 @@ public class RhythmMovement : MonoBehaviour
     [SerializeField] float speed = 50;
     [SerializeField] float jumpHeight = 30f;
     [SerializeField] float gravity = -9.8f;
-    [SerializeField] float defualtTimerValue = 0.5f;
     [SerializeField] float initialHeight = 1.8f;
     [SerializeField] float crouchingHeight = 0.8f;
-    [SerializeField] IKFootSolver[] footSolvers;
-    float timer;
     WallChosen chosenWall = WallChosen.None;
 
     Animator animator;
 
-    [SerializeField] bool WallRunSection = false;
+    bool WallRunSection = false;
+    [SerializeField]bool jumped = false;
     bool grounded;
     private bool Move = true;
 
@@ -28,71 +26,57 @@ public class RhythmMovement : MonoBehaviour
 
     [SerializeField] LayerMask GroundLayers;
 
+    PlayerInputActions playerInput;
+
     private void Start()
     {
+        playerInput = new PlayerInputActions();
+        playerInput.Movement.Enable();
+
         playerController = GetComponent<CharacterController>();
-        timer = defualtTimerValue;
         animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
         grounded = playerController.isGrounded;
+        SetWallChosen();
         ProcessMovement();
-
-        if (WallRunSection)
-        {
-            RunTimer();
-        }
+        if (playerController.isGrounded) { jumped = false; }
     }
 
     private void ProcessMovement()
     {
-        if (!WallRunSection)
+        if (WallRunSection && jumped)
         {
-            if (transform.localPosition.x < -0.4f)
+            if (chosenWall == WallChosen.Left)
             {
-                playerVelocity.x = 10f;
-            }
-            else if (transform.localPosition.x > 0.4f)
-            {
+                playerVelocity.y = 3f;
                 playerVelocity.x = -10f;
             }
-            else { playerVelocity.x = 0f; }
-            playerVelocity.y += Time.deltaTime * gravity;
-        }
-        else
-        {
-            if (timer > 0)
+            else if (chosenWall == WallChosen.Right)
             {
-                if (chosenWall == WallChosen.Left)
-                {
-                    playerVelocity.y = 3f;
-                    playerVelocity.x = -10f;
-                }
-                else if (chosenWall == WallChosen.Right)
-                {
-                    playerVelocity.y = 3f;
-                    playerVelocity.x = 10f;
-                }
-            }
-            else
-            {
-                playerVelocity.x = 0f;
-                playerVelocity.y += Time.deltaTime * gravity;
+                playerVelocity.y = 3f;
+                playerVelocity.x = 10f;
             }
         }
+
+        playerVelocity.y += Time.deltaTime * gravity;
+        
         if (Move)
         {
+            Vector2 inputVector = playerInput.Movement.Move.ReadValue<Vector2>();
+            Vector3 MovementDirection = new Vector3(inputVector.x, 0, inputVector.y);
+            playerController.Move(Time.deltaTime * transform.TransformDirection(MovementDirection) * speed);
+
+
             playerController.Move(Vector3.forward * speed * Time.deltaTime);
             playerController.Move(playerVelocity * Time.deltaTime);
 
         }
     }
-    private void RunTimer()
-    {
-        timer -= Time.deltaTime;
-    }
+
+
 
     public void Jump(InputAction.CallbackContext context)
     {
@@ -100,38 +84,14 @@ public class RhythmMovement : MonoBehaviour
         {
             if (grounded)
             {
+                jumped = true;
                 animator.SetTrigger("Jump");
                 playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
             }
         }
     }
 
-    public void WallRunLeft()
-    {
-        if (WallRunSection && (chosenWall == WallChosen.Left || chosenWall == WallChosen.None))
-        {
-            foreach (IKFootSolver foot in footSolvers)
-            {
-                foot.SetChosenWall(WallChosen.Left);
-            }
-            chosenWall = WallChosen.Left;
-            timer = 0.25f;
-        }
-    }
-
-    public void WallRunRight()
-    {
-        if (WallRunSection && (chosenWall == WallChosen.Right || chosenWall == WallChosen.None))
-        {
-            foreach (IKFootSolver foot in footSolvers)
-            {
-                foot.SetChosenWall(WallChosen.Right);
-            }
-            chosenWall = WallChosen.Right;
-            timer = 0.25f;
-        }
-    }
-
+    
     /*
     public void MoveLeftFoot()
     {
@@ -199,14 +159,40 @@ public class RhythmMovement : MonoBehaviour
         }
     }
 
+    public void SetWallChosen() 
+    {
+        Ray rayLeft = new Ray(new Vector3(transform.position.x, transform.position.y + playerController.height, transform.position.z), -Vector3.right);
+        Ray rayRight = new Ray(new Vector3(transform.position.x, transform.position.y + playerController.height, transform.position.z), Vector3.right);
+
+        Debug.DrawRay(rayLeft.origin, rayRight.direction);
+
+        if (Physics.Raycast(rayLeft, out RaycastHit hitLeft, 5, LayerMask.GetMask("Wall"))) { chosenWall = WallChosen.Left; }
+        else if (Physics.Raycast(rayRight, out RaycastHit hitRight, 5, LayerMask.GetMask("Wall"))) { chosenWall = WallChosen.Right; }
+        else { chosenWall = WallChosen.None; }
+    }
+
     public void SetWallRunSection(bool newValue)
     {
-        chosenWall = WallChosen.None;
-        timer = 0f;
         WallRunSection = newValue;
-        foreach (IKFootSolver foot in footSolvers)
+
+        if (!newValue)
         {
-            foot.SetWallRunning(newValue);
+            //WallRunning = false;
+            animator.SetBool("WallRunning", false);
+        }
+        else
+        {
+            Debug.Log("wallrunsection");
+            if (chosenWall == WallChosen.Left) {
+                playerController.center = new Vector3(playerController.center.x, playerController.center.y, playerController.center.z);
+                animator.SetBool("WallRunning", true);
+                animator.SetBool("WallRunRight", false);
+            }
+            if (chosenWall == WallChosen.Right) { 
+                playerController.center = new Vector3(playerController.center.x, playerController.center.y, playerController.center.z);
+                animator.SetBool("WallRunning", true);
+                animator.SetBool("WallRunRight", true);
+            }
         }
     }
 
